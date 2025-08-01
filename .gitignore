@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+
+# Test results and reports
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# VSCode settings (optional, if you want to avoid sharing workspace settings)
+.vscode/
+
+# Environment files (optional — include only if you use .env files)
+.env
+.env.*
+
+# OS-specific files
+.DS_Store         # macOS
+Thumbs.db         # Windows
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript build output (only if you're compiling TS manually — currently not needed)
+dist/
+build/

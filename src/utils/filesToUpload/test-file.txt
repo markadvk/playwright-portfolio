@@ -1,0 +1,14 @@
+Sample File for Web Upload Testing
+
+This file is created as part of an automated testing portfolio project using Playwright.
+
+Purpose:
+- To test file upload functionality via standard input, drag-and-drop, and custom UI components.
+- To demonstrate end-to-end automation of file handling features.
+
+Usage Scenarios:
+1. Uploading via a traditional file input (`<input type="file">`)
+2. Simulating drag-and-drop file upload
+3. Uploading through a custom file uploader widget
+
+This file contains no sensitive information and is safe for testing purposes.
