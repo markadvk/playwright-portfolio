@@ -20,26 +20,29 @@ This is a robust, scalable, and fully modular automation framework built with **
 
 ## Folder Structure Overview
 
+```
 playwright-portfolio/
 ├── src/
-│ ├── pages/ # Page Objects organized by feature
-│ │ └── login/
-│ │   ├── page.ts # LoginPage extends BasePage
-│ │   └── locators.ts # Login page locators
-│ ├── tests/ # Test cases grouped by feature
-│ │ ├── login.spec.ts
-│ │ ├── dropdown.spec.ts
-│ │ └── file-upload.spec.ts
-│ ├── utils/ # Reusable helpers
-│ │ ├── constants.ts # UI messages and texts
-│ │ ├── testData.ts # Centralized test data
-│ │ └── fileUtils.ts # File upload helpers
-│ └── fixtures.ts # Shared test fixtures
-├── test-results/ # Playwright auto-generated reports
-├── .gitignore
+│   ├── pages/                     # Page Objects organized by feature
+│   │   ├── basePage.ts            # Common methods for all pages
+│   │   └── page1/
+│   │       ├── page.ts            # page1Page extends BasePage
+│   │       └── locators.ts        # page1 page locators
+│   ├── tests/                     # Test cases grouped by feature; tagged with @smoke, @regression, @functional
+│   │   ├── test-feature1.spec.ts
+│   │   ├── test-feature2.spec.ts
+│   │   └── test-feature3.spec.ts
+│   ├── utils/                     # Reusable helpers
+│   │   ├── constants.ts           # UI messages and texts
+│   │   ├── testData.ts            # Centralized test data
+│   │   └── fileUtils.ts           # File upload helpers
+│   └── fixtures.ts                # Shared test fixtures
+├── test-results/                  # Playwright auto-generated reports
+├── .gitignore                     # Excludes node_modules, logs, and test artifacts
 ├── package.json
-├── playwright.config.ts # Test configuration file
+├── playwright.config.ts           # Test configuration file
 ├── README.md
+```
 
 ---
 
