@@ -104,6 +104,14 @@ You can execute tests using the following pre-defined commands:
 
 ---
 
+## 🧪 Sample Test File Locations
+
+- `src/tests/login.spec.ts`
+- `src/tests/file-upload.spec.ts`
+- `src/tests/dropdown.spec.ts`
+
+---
+
 ## 📊 Test Reports
 
 - HTML reports are auto-generated under `/playwright-report`
@@ -112,11 +120,44 @@ You can execute tests using the following pre-defined commands:
 
 ---
 
-## 🧪 Sample Test File Locations
+## 📄 Test Case Template (Excel + PDF)
 
-- `src/tests/login.spec.ts`
-- `src/tests/file-upload.spec.ts`
-- `src/tests/dropdown.spec.ts`
+This project includes a **professional, client-ready test case template**, built for structured manual QA planning, tracking, and reporting.
+
+**Key Features:**
+- Executive-style **Dashboard** with test metrics and visual indicators
+- **Module-wise test planning** with separate sheets for each feature
+- Smart dropdowns for:
+  - Test Type (Smoke, Regression, etc.)
+  - Status (Not Run, Pass, Fail, etc.)
+  - Priority (Low, Medium, Critical)
+  - Tester & Execution Date (with calendar picker)
+- **Freezed headers** and protected data areas for safe editing
+- **Summary view with charts**, filtered stats, and test tracking overview
+- **PDF export-ready** for quick client reporting
+
+📁 **Files Included** (in [`test-artifacts/`](./test-artifacts/)):
+- [`test-case-template.xlsx`](./test-artifacts/test-case-template.xlsx) – Editable Excel template
+- [`test-case-dashboard.pdf`](./test-artifacts/test-case-dashboard.pdf) – Preview version for sharing
+
+📝 **Note**: The test case data in this template is for demonstration purposes only.  
+It includes a mix of `Pass`, `Fail`, `No Run`, and `Blocked` statuses to simulate a real-world QA project.  
+All automated test cases in this Playwright framework currently pass successfully.
+
+🔗 **Interactive View (Google Sheet)**:  
+You can also preview the fully functional and visual-rich version here:  
+👉 [Google Sheet (View Only)](https://docs.google.com/spreadsheets/d/1gBczB6KFnLDqWGXs17fa6ba-BBoQTUBqqJXG5a20djc/edit?gid=0#gid=0)
+
+💼 **Why Clients Love This Template**
+- **Time-Saving**: Reuse for any project — no need to create a structure from scratch
+- **Client-Ready**: Polished dashboard with exportable PDF for stakeholder reports
+- **Customizable**: Add your modules, testers, and execution data easily
+- **Professional Look**: Clean UI, visual tracking, and organized layout make it easy for both QA teams and non-technical stakeholders
+
+This isn’t just a test case sheet — it’s a **full reporting and planning system** for real QA projects.
+
+📸 **Preview Snapshot:**
+![Test Dashboard Preview](./test-artifacts/test-dashboard-preview.png)
 
 ---
 
