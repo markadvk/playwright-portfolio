@@ -32,18 +32,13 @@ pipeline {
             steps {
                 echo 'Running Playwright tests...'
 
-                // ANSI wrapper (requires AnsiColor plugin)
                 ansiColor('xterm') {
-                    // Force color output from Node/NPM and set terminal type
                     withEnv([
                         'FORCE_COLOR=1',
                         'NPM_CONFIG_COLOR=true',
                         'TERM=xterm-256color'
                     ]) {
-                        // Switch Windows cmd to UTF-8 (harmless here)
                         bat 'chcp 65001 >NUL'
-
-                        // Ensure browsers
                         bat 'npx playwright install --with-deps'
 
                         script {
@@ -56,33 +51,32 @@ pipeline {
                     }
                 }
             }
-        }
 
-        stage('Publish Report') {
-            steps {
-                echo "Publishing Playwright reports..."
+            post {
+                always {
+                    echo 'Archiving HTML report, screenshots, videos, and JUnit results...'
 
-                // Archive HTML report (optional, useful for download)
-                archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+                    // Archive Playwright HTML report
+                    archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
 
-                // Archive raw test results (JUnit XML)
-                archiveArtifacts artifacts: 'test-results/**/*.xml', fingerprint: true
+                    // Archive raw test results (JUnit XML) + screenshots/videos
+                    archiveArtifacts artifacts: 'test-results/**', fingerprint: true
 
-                // Publish interactive HTML report (clickable in Jenkins UI)
-                publishHTML(target: [
-                    reportName: 'Playwright HTML Report',
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    keepAll: true,
-                    alwaysLinkToLastBuild: true,
-                    allowMissing: false
-                ])
+                    // Publish JUnit results for trend charts
+                    junit 'test-results/**/*.xml'
 
-                // Publish JUnit results for Jenkins trend charts
-                junit 'test-results/**/*.xml'
+                    // Optionally, publish HTML report in Jenkins UI
+                    publishHTML(target: [
+                        reportName: 'Playwright HTML Report',
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: false
+                    ])
+                }
             }
         }
-
     }
 
     post {

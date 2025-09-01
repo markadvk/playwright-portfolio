@@ -10,8 +10,6 @@ export default defineConfig({
   fullyParallel: true,
   use: {
     baseURL: 'https://markadvk.github.io/rapidtest/',
-    browserName: 'chromium',
-    headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
