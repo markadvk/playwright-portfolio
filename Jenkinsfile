@@ -50,20 +50,42 @@ pipeline {
                             if (params.TEST_SUITE == 'all') {
                                 bat 'npm run test'
                             } else {
-                                bat "npm run test:${params.TEST_SUITE}"
+                                bat "npm run test -- --grep @${params.TEST_SUITE}"
                             }
                         }
                     }
                 }
             }
         }
+
+        stage('Publish Report') {
+            steps {
+                echo "Publishing Playwright reports..."
+
+                // Archive HTML report (optional, useful for download)
+                archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+
+                // Archive raw test results (JUnit XML)
+                archiveArtifacts artifacts: 'test-results/**/*.xml', fingerprint: true
+
+                // Publish interactive HTML report (clickable in Jenkins UI)
+                publishHTML(target: [
+                    reportName: 'Playwright HTML Report',
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+
+                // Publish JUnit results for Jenkins trend charts
+                junit 'test-results/**/*.xml'
+            }
+        }
+
     }
 
     post {
-        always {
-            echo 'Archiving test results...'
-            archiveArtifacts artifacts: 'test-results/**/*.*', fingerprint: true
-        }
         success {
             echo '✅ Build succeeded!'
         }
