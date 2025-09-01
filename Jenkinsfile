@@ -42,13 +42,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Publish Test Report') {
-            steps {
-                echo "Publishing Playwright HTML report..."
-                bat 'npx playwright show-report --port=9223 &'
-            }
-        }
     }
 
     post {
