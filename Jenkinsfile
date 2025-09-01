@@ -24,20 +24,20 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo "Installing npm dependencies..."
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run UI Tests') {
             steps {
                 echo "Running Playwright tests..."
-                sh 'npx playwright install --with-deps'
+                bat 'npx playwright install --with-deps'
 
                 script {
                     if (params.TEST_SUITE == 'all') {
-                        sh 'npm run test'
+                        bat 'npm run test'
                     } else {
-                        sh "npm run test:${params.TEST_SUITE}"
+                        bat "npm run test:${params.TEST_SUITE}"
                     }
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
         stage('Publish Test Report') {
             steps {
                 echo "Publishing Playwright HTML report..."
-                sh 'npx playwright show-report --port=9223 &'
+                bat 'npx playwright show-report --port=9223 &'
             }
         }
     }
