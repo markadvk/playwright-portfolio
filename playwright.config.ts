@@ -9,7 +9,7 @@ export default defineConfig({
   ],
   fullyParallel: true,
   use: {
-    baseURL: 'https://markadvk.github.io/rapidtest/',
+    baseURL: 'https://markadvk.github.io/verifykoders/demos/',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },

@@ -1,7 +1,7 @@
 // Test input data for different user scenarios
 export const testData = {
   validUser: {
-    username: 'vinayak',
+    username: 'verifykoders',
     password: 'automation',
   },
 
