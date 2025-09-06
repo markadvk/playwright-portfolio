@@ -74,9 +74,84 @@ pipeline {
                         alwaysLinkToLastBuild: true,
                         allowMissing: false
                     ])
+
+                    // === Deploy to GitHub Pages ===
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                        bat '''
+                            REM === Set local variables ===
+                            set REPORT_DIR=playwright-report
+                            set TARGET_DIR=reports
+
+                            REM === Git setup for CI user ===
+                            git config user.name "jenkins"
+                            git config user.email "jenkins@ci"
+
+                            REM === Prepare a temporary folder ===
+                            rmdir /s /q tmp 2>nul || echo "no tmp folder"
+                            mkdir tmp
+                            xcopy %REPORT_DIR% tmp /E /I /Y
+
+                            REM === Initialize a new git repo in tmp ===
+                            cd tmp
+                            git init
+                            git checkout -b gh-pages
+
+                            REM === Put reports into /reports ===
+                            mkdir %TARGET_DIR%
+                            xcopy * %TARGET_DIR% /E /I /Y
+
+                            REM === Commit and push to GitHub Pages ===
+                            git add .
+                            git commit -m "ci: update Playwright report %GIT_COMMIT%"
+
+                            git push --force https://%GITHUB_TOKEN%@github.com/markadvk/playwright-portfolio.git gh-pages:gh-pages
+                        '''
+                    }
                 }
             }
         }
+
+        // stage('Deploy Reports') {
+        //     when {
+        //         expression { env.GIT_BRANCH == 'origin/main' }
+        //     }
+        //     steps {
+        //         // Generate gitHub token and store it in Jenkins credentials
+        //         // Jenkins: Manage Jenkins → Credentials → Secret Text → ID = github-token
+        //         withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+        //             bat '''
+        //                 REM === Set local variables ===
+        //                 set REPORT_DIR=playwright-report
+        //                 set TARGET_DIR=reports
+
+        //                 REM === Git setup for CI user ===
+        //                 git config user.name "jenkins"
+        //                 git config user.email "jenkins@ci"
+
+        //                 REM === Prepare a temporary folder ===
+        //                 rmdir /s /q tmp 2>nul || echo "no tmp folder"
+        //                 mkdir tmp
+        //                 xcopy %REPORT_DIR% tmp /E /I /Y
+
+        //                 REM === Initialize a new git repo in tmp ===
+        //                 cd tmp
+        //                 git init
+        //                 git checkout -b gh-pages
+
+        //                 REM === Put reports into /reports ===
+        //                 mkdir %TARGET_DIR%
+        //                 xcopy * %TARGET_DIR% /E /I /Y
+
+        //                 REM === Commit and push to GitHub Pages ===
+        //                 git add .
+        //                 git commit -m "ci: update Playwright report %GIT_COMMIT%"
+
+        //                 git push --force https://%GITHUB_TOKEN%@github.com/markadvk/playwright-portfolio.git gh-pages:gh-pages
+        //             '''
+        //         }
+        //     }
+        // }
+
     }
 
     post {
