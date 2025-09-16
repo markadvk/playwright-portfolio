@@ -54,18 +54,11 @@ pipeline {
 
             post {
                 always {
-                    echo 'Archiving HTML report, screenshots, videos, and JUnit results...'
+                    echo '📦 Archiving Playwright reports and publishing to GitHub Pages...'
 
-                    // Archive Playwright HTML report
                     archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
-
-                    // Archive raw test results (JUnit XML) + screenshots/videos
-                    archiveArtifacts artifacts: 'test-results/**', fingerprint: true
-
-                    // Publish JUnit results for trend charts
                     junit 'test-results/**/*.xml'
 
-                    // Optionally, publish HTML report in Jenkins UI
                     publishHTML(target: [
                         reportName: 'Playwright HTML Report',
                         reportDir: 'playwright-report',
@@ -75,83 +68,61 @@ pipeline {
                         allowMissing: false
                     ])
 
-                    // === Deploy to GitHub Pages ===
                     withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                         bat '''
-                            REM === Set local variables ===
+                            REM ============================
+                            REM Setup
+                            REM ============================
                             set REPORT_DIR=playwright-report
                             set TARGET_DIR=reports
+                            set REPO=https://%GITHUB_TOKEN%@github.com/markadvk/playwright-portfolio.git
 
-                            REM === Git setup for CI user ===
+                            rmdir /s /q gh-pages 2>nul || echo "no gh-pages folder"
+                            git clone --branch gh-pages --depth=1 %REPO% gh-pages || (
+                                git clone %REPO% gh-pages
+                                cd gh-pages
+                                git checkout --orphan gh-pages
+                                cd ..
+                            )
+
+                            REM ============================
+                            REM Copy this build’s report
+                            REM ============================
+                            rmdir /s /q gh-pages\\%TARGET_DIR%\\latest 2>nul || echo "no latest"
+                            mkdir gh-pages\\%TARGET_DIR%\\build%BUILD_NUMBER%
+                            xcopy %REPORT_DIR% gh-pages\\%TARGET_DIR%\\build%BUILD_NUMBER% /E /I /Y
+                            mkdir gh-pages\\%TARGET_DIR%\\latest
+                            xcopy %REPORT_DIR% gh-pages\\%TARGET_DIR%\\latest /E /I /Y
+
+                            REM ============================
+                            REM Generate summary page
+                            REM ============================
+                            > gh-pages\\%TARGET_DIR%\\index.html echo ^<h1^>Playwright Reports (Last 15 Builds)^</h1^>
+                            for /f "skip=15 eol=: delims=" %%F in ('dir /b /ad-h /o-d gh-pages\\%TARGET_DIR%\\build*') do rmdir /s /q gh-pages\\%TARGET_DIR%\\%%F
+                            for /f "eol=: delims=" %%F in ('dir /b /ad-h /o-d gh-pages\\%TARGET_DIR%\\build*') do (
+                                echo ^<p^>^<a href="./%%F/index.html"^>%%F^</a^>^</p^> >> gh-pages\\%TARGET_DIR%\\index.html
+                            )
+
+                            REM ============================
+                            REM Push changes
+                            REM ============================
+                            cd gh-pages
                             git config user.name "jenkins"
                             git config user.email "jenkins@ci"
-
-                            REM === Prepare a temporary folder ===
-                            rmdir /s /q tmp 2>nul || echo "no tmp folder"
-                            mkdir tmp
-                            xcopy %REPORT_DIR% tmp /E /I /Y
-
-                            REM === Initialize a new git repo in tmp ===
-                            cd tmp
-                            git init
-                            git checkout -b gh-pages
-
-                            REM === Put reports into /reports ===
-                            mkdir %TARGET_DIR%
-                            xcopy * %TARGET_DIR% /E /I /Y
-
-                            REM === Commit and push to GitHub Pages ===
                             git add .
-                            git commit -m "ci: update Playwright report %GIT_COMMIT%"
-
-                            git push --force https://%GITHUB_TOKEN%@github.com/markadvk/playwright-portfolio.git gh-pages:gh-pages
+                            git commit -m "ci: update reports build %BUILD_NUMBER%"
+                            git push --force %REPO% gh-pages
                         '''
+                    }
+
+                    script {
+                        echo "📊 Report for this build: https://markadvk.github.io/playwright-portfolio/reports/build${env.BUILD_NUMBER}/index.html"
+                        echo "🔗 Latest report:          https://markadvk.github.io/playwright-portfolio/reports/latest/index.html"
+                        echo "📂 All reports:           https://markadvk.github.io/playwright-portfolio/reports/"
                     }
                 }
             }
         }
-
-        // stage('Deploy Reports') {
-        //     when {
-        //         expression { env.GIT_BRANCH == 'origin/main' }
-        //     }
-        //     steps {
-        //         // Generate gitHub token and store it in Jenkins credentials
-        //         // Jenkins: Manage Jenkins → Credentials → Secret Text → ID = github-token
-        //         withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-        //             bat '''
-        //                 REM === Set local variables ===
-        //                 set REPORT_DIR=playwright-report
-        //                 set TARGET_DIR=reports
-
-        //                 REM === Git setup for CI user ===
-        //                 git config user.name "jenkins"
-        //                 git config user.email "jenkins@ci"
-
-        //                 REM === Prepare a temporary folder ===
-        //                 rmdir /s /q tmp 2>nul || echo "no tmp folder"
-        //                 mkdir tmp
-        //                 xcopy %REPORT_DIR% tmp /E /I /Y
-
-        //                 REM === Initialize a new git repo in tmp ===
-        //                 cd tmp
-        //                 git init
-        //                 git checkout -b gh-pages
-
-        //                 REM === Put reports into /reports ===
-        //                 mkdir %TARGET_DIR%
-        //                 xcopy * %TARGET_DIR% /E /I /Y
-
-        //                 REM === Commit and push to GitHub Pages ===
-        //                 git add .
-        //                 git commit -m "ci: update Playwright report %GIT_COMMIT%"
-
-        //                 git push --force https://%GITHUB_TOKEN%@github.com/markadvk/playwright-portfolio.git gh-pages:gh-pages
-        //             '''
-        //         }
-        //     }
-        // }
-
     }
 
     post {
