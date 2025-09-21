@@ -1,3 +1,9 @@
+/**
+ * VerifyKoders Automation Framework
+ * Author: VerifyKoders (Geetanjali)
+ * Licensed under MIT License
+ */
+
 // Base class with common actions used by all page objects
 import { Page, Locator } from '@playwright/test';
 

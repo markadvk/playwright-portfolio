@@ -1,5 +1,7 @@
 # 🚀 Playwright End-to-End Test Automation Framework
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 A **robust**, **scalable**, and **modular** automation framework built using `Playwright` and `TypeScript`.  
 Designed for both **freelance projects** and **production environments**, it follows industry best practices with a clean architecture, reusable components, and flexible test execution.
 
@@ -196,4 +198,16 @@ Need help automating your web app?
 
 **Let’s bring quality, speed, and stability to your software through high-standard testing.**
 
-📬 Reach out via **Upwork or GitHub** — your test coverage is one message away.
+📬 Reach out via to me — your test coverage is one message away.
+
+
+🔖 **About / Contact** -
+Maintained by VerifyKoders — QA & Automation Portfolio
+
+🌐 Website: https://markadvk.github.io/verifykoders/
+
+▶️ YouTube: https://www.youtube.com/@verifykoders
+
+License: This project is licensed under the [MIT License](./LICENSE)
+
+© 2025 VerifyKoders. All rights reserved.
