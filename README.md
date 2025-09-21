@@ -18,6 +18,10 @@ Designed for both **freelance projects** and **production environments**, it fol
 - Auto-captures **screenshots and video** on failure
 - Simple script execution via pre-defined `npm` commands
 - **Cross-browser ready** — uses `Chromium` by default, configurable for others
+- Integrated reporters: list + JUnit for console and CI-friendly output
+- **End-to-end CI/CD pipeline** with:
+    - Automated test execution on push
+    - Reports published to web, storing last {n} build results
 
 ---
 
@@ -46,6 +50,7 @@ playwright-portfolio/
 ├── .gitignore                     # Excludes node_modules, logs, and test artifacts
 ├── package.json
 ├── playwright.config.ts           # Test configuration file
+├── Jenkinsfile                    # Added CI/CD pipeline
 ├── README.md
 ```
 
@@ -117,9 +122,15 @@ You can execute tests using the following pre-defined commands:
 ## 📊 Test Reports
 
 - HTML reports are auto-generated under `/playwright-report`
+- JUnit reports are auto-generated under `/test-results`
 - **Screenshots and videos** are captured on test failure
 - **Trace viewer** available in debug mode for deep inspection
-
+- **Console-friendly** execution trends showing build metrics
+- Reports report publishing:
+  - All builds: [View last n builds](https://markadvk.github.io/playwright-portfolio/reports/)
+  - Latest build: [View latest report](https://markadvk.github.io/playwright-portfolio/reports/latest/index.html)
+  - Specific build: [View any build](https://markadvk.github.io/playwright-portfolio/reports/build40/index.html)
+ by replacing build40 with the desired build number, e.g., build{available-build-number}
 ---
 
 ## 📄 Test Case Template (Excel + PDF)
@@ -168,6 +179,7 @@ This isn’t just a test case sheet — it’s a **full reporting and planning s
 - Build Playwright automation frameworks from scratch with scalable architecture
 - Convert existing **manual test cases** into automated test suites
 - Integrate **CI/CD pipelines** and cross-browser/device test strategies
+- Deliver visually-rich, client-friendly test reports with customizable dashboards and metrics
 - Maintain, refactor, and expand automation coverage over time
 - Deliver **clear reports**, test tagging, and documentation for stakeholders
 - Provide fast, reliable, and **production-ready automation solutions** tailored to your application
@@ -176,9 +188,9 @@ This isn’t just a test case sheet — it’s a **full reporting and planning s
 
 ## 🌐 Custom Test Website
 
-All test scenarios were designed and validated using my own hosted demo site:
+All test scenarios were designed and validated using playground my own hosted website:
 
-🔗 **RapidTest** – [https://markadvk.github.io/rapidtest/](https://markadvk.github.io/rapidtest/)
+🔗 **VerifyKoders** – [verifykoders-playground/](https://markadvk.github.io/verifykoders/demos/)
 
 A lightweight frontend app simulating:
 - Login workflows
@@ -198,16 +210,22 @@ Need help automating your web app?
 
 **Let’s bring quality, speed, and stability to your software through high-standard testing.**
 
-📬 Reach out via to me — your test coverage is one message away.
+📬 [Contact Me](https://markadvk.github.io/verifykoders/contact/) — your test coverage is one message away.
 
+---
 
-🔖 **About / Contact** -
+## 🔖 About / Contact
+
 Maintained by VerifyKoders — QA & Automation Portfolio
 
 🌐 Website: https://markadvk.github.io/verifykoders/
 
 ▶️ YouTube: https://www.youtube.com/@verifykoders
 
-License: This project is licensed under the [MIT License](./LICENSE)
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](./LICENSE)
 
 © 2025 VerifyKoders. All rights reserved.
