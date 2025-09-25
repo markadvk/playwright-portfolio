@@ -21,4 +21,5 @@ test.describe('Dropdown Tests', () => {
     const selected = await dropdownPage.getCustomDropdownSelected();
     expect(selected).toBe(custom);
   });
+
 });
